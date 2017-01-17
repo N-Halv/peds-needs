@@ -1,0 +1,33 @@
+$colors: (
+    background: (
+        menu: #ddd,
+        page: #fff
+    ),
+    text: (
+        menu: #222,
+        page: #444,
+    )
+);
+
+
+@function color($type, $color: false) {
+
+    // you can also pass just a color to this function
+    // the only argument then becomes $color
+    // and $type defaults to "base"
+    @if not $color {
+        $color: $type;
+        $type: base;
+    }
+
+    @if not map-has-key($colors, $type) {
+        @error "no color type of #{$type} exists";
+    }
+
+    $color-type: map-get($colors, $type);
+    @if not map-has-key($color-type, $color) {
+        @error "no color named #{$color} for type #{$type} exists";
+    }
+
+    @return map-get(map-get($colors, $type), $color);
+}

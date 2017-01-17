@@ -1,0 +1,19 @@
+.input {
+    $height: 30px;
+    $padding: 5px;
+    display: inline-block;
+    width: 500px;
+
+    input {
+        width: 100%;
+        background-color: white;
+        height: $height;
+        line-height: $height;
+        padding: $padding;
+        border: solid 1px #ddd;
+    }
+
+    .react-datepicker__input-container {
+        display: block;
+    }
+}

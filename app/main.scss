@@ -1,0 +1,71 @@
+@import "scss/colors";
+@import "scss/meyer-reset";
+@import "components/components";
+@import "../node_modules/react-datepicker/dist/react-datepicker.css";
+
+html, body {
+    width: 100%;
+    overflow: hidden;
+}
+
+
+$back-to-menu-height: 30px;
+$page-transition: transform .3s;
+
+.app {
+
+    .app-section {
+        max-width: 500px;
+        height: 100%;
+        margin: auto;
+    }
+
+
+    .main-menu {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        transition: $page-transition;
+        box-shadow: #555 0px 1px 4px;
+        background-color: color(background, menu);
+        color: color(text, menu);
+
+        .to-menu {
+            height: 0px;
+            overflow: hidden;
+            position: absolute;
+            transition: height .3s;
+            width: 100%;
+            bottom: 0px;
+
+            &::after {
+                content: 'BACK ^';
+            }
+        }
+    }
+
+    .open-page {
+        position: absolute;
+        height: calc(100% - #{$back-to-menu-height};
+        width: 100%;
+        padding-top: $back-to-menu-height;
+        background-color: color(background, page);
+        color: color(text, page);
+    }
+
+    &.page-opened {
+
+        .main-menu {
+            transform: translate3d(0, calc(-100% + #{$back-to-menu-height}), 0);
+
+            &:hover {
+                $growth: 8px;
+                transform: translate3d(0, calc(-100% + #{$back-to-menu-height + $growth}), 0);
+            }
+
+            .to-menu {
+                height: $back-to-menu-height;
+            }
+        }
+    }
+}

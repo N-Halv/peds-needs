@@ -1,0 +1,30 @@
+
+.toggle {
+    display: inline-block;
+    position: relative;
+    border: solid 1px #ccc;
+    border-radius: 14px;
+    overflow: hidden;
+
+
+
+    &__option {
+        display: inline-block;
+        padding: 10px;
+        cursor: pointer;
+
+        &--selected {
+            color: green;
+        }
+
+    }
+    &__slidder {
+        transition: left .3s, width .3s;
+        position: absolute;
+        height: 100%;
+        top: 0;
+        background-color: orange;
+        z-index: -1;
+    }
+
+}
