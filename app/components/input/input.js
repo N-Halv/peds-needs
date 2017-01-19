@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import DateInput from './dateInput.js'
 
 class Input extends React.Component {
@@ -35,14 +36,14 @@ class Input extends React.Component {
 
     getInput = () => {
         const {types, onChange, setRef} = this
-        const {type, placeholder, onChange: onDateChange} = this.props
-        const test = 'test';
+        const {type, placeholder, value, onChange: onDateChange} = this.props
+        console.log('input render', value)
         if(type === types.text || type === types.number) {
             return <input type={type} placeholder={placeholder}
-                        onChange={onChange} ref={setRef('input')} value={test} />
+                        onChange={onChange} ref={setRef('input')} value={value} />
         }
         else if(type === types.date) {
-            return <DateInput placeholder={placeholder} onChange={onDateChange} />
+            return <DateInput placeholder={placeholder} onChange={onDateChange} value={value} />
         }
     }
 
@@ -59,7 +60,12 @@ Input.propTypes = {
     type: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
     placeholder: React.PropTypes.string,
-    width: React.PropTypes.string
+    width: React.PropTypes.string,
+    value: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.number,
+        React.PropTypes.instanceOf(moment)
+    ])
 }
 
 export default Input

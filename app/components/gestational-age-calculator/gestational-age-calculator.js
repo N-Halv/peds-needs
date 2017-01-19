@@ -1,64 +1,18 @@
 import React from 'react'
 import Toggle from '../toggle/toggle.js'
 import Input from '../input/input.js'
+import config from './gestational-age-calculator.config.js'
 
+//TODO: this is all broken: fix it!
 class GestationalAgeCalculator extends React.Component {
 
     constructor() {
         super()
-        const sections = this.sections
+        const sections = config()
         Object.keys(sections).forEach((key) => {
             sections[key].selected = sections[key].options[0]
         })
-        this.state = {
-            sections: this.sections
-        }
-    }
-
-    values = {
-        due: null,
-        birth: null,
-        date: null
-    }
-
-    sections = {
-        due: {
-            options: [
-                {
-                    label: 'Due Date',
-                    inputs: [
-                        {
-                            type: 'date',
-                            placeholder: 'hey',
-                            defaut: new Date(),
-                            id: 'due_date'
-                        }
-                    ],
-                    convert: (val) => val
-                },
-
-
-                {
-                    label: 'Last Menstural Period',
-                    inputs: [
-                        {
-                            type: 'date',
-                            placeholder: 'Last Menstural Period',
-                            id: 'last_menstural_period_date'
-                        }
-                    ],
-                    convert: (val) => {
-                        return val ? new Date(val.getTime() + 86400000 * 7 * 30) : null
-                    }
-                }
-            ]
-        },
-        // birth: {
-        //
-        // },
-        // date: {
-        //
-        // }
+        this.state = {sections}
     }
 
     toggle = (sectionName) => (option, index) => {
@@ -67,13 +21,38 @@ class GestationalAgeCalculator extends React.Component {
         this.setState({ sections })
     }
 
-    onChange = (sectionName, option) => (value) => {
-        this.values[sectionName] = option.convert(value)
-        console.log('onchange', this.values)
+    onChange = (sectionName, option, input) => (value) => {
+        const sections = this.state.sections
+        const section = sections[sectionName]
+        input.value = value
+
+        const inputValues = option.inputs.reduce((out, item) => {
+            out[item.id] = item.value
+            return out
+        }, {})
+
+        const convertedValue = option.toValue(inputValues, sections)
+        section.value = convertedValue
+        const func = (sec) => {
+            sec.options.forEach(item => {
+                const obj = item.fromValue(convertedValue, sections)
+                item.inputs.forEach(i => i.value = obj[i.id])
+            })
+        }
+
+        if(section.isDependancy) {
+            Object.keys(sections).map((sectionName) => func(sections[sectionName]))
+        }
+        else{
+            func(section)
+        }
+
+        this.setState({ sections })
     }
 
     renderOption = (sectionName) => (option) => {
-        const {renderInput, sections} = this
+        const {sections} = this.state
+        const {renderInput} = this
         const selectedOption = sections[sectionName].selected
         return <div key={option.label} className={option === selectedOption ? 'visible' : 'hidden'}>
             {option.inputs.map(renderInput(option, sectionName))}
@@ -82,14 +61,21 @@ class GestationalAgeCalculator extends React.Component {
 
     renderInput = (option, sectionName) => (input) => {
         const {onChange} = this
-        return <Input key={input.id} type={input.type} placeholder={input.placeholder} onChange={onChange(sectionName, option)} />
+        return <Input key={input.id} value={input.value} type={input.type} placeholder={input.placeholder} onChange={onChange(sectionName, option, input)} />
     }
 
     render() {
         const {sections} = this.state
         const {toggle, renderOption} = this
 
+        // for test
+        const dueDate = sections.dueDate.value ? sections.dueDate.value.format('YYYY-MM-DD') : 'nothing'
+        const gestationAtBirth = sections.gestationAtBirth.value ? sections.gestationAtBirth.value : 'nothing'
+
         return <div>
+            <div>Due Date: {dueDate}</div>
+            <div>Gestation At Birth: {gestationAtBirth}</div>
+            <br /><br />
             {
                 Object.keys(sections).map((sectionName) => {
                     const section = sections[sectionName]
@@ -102,160 +88,11 @@ class GestationalAgeCalculator extends React.Component {
                 })
             }
         </div>
-
-
-        // return <div>
-        //     {
-        //         Object.keys(sections).map((sectionName) => {
-        //             const section = sections[sectionName]
-        //             const selected = section.selected
-        //             return <div key={sectionName}>
-        //                 <div>
-        //                     <Toggle options={section.options} onChange={toggle(sectionName)} />
-        //                 </div>
-        //                 {section.options.map((option) => {
-        //                     return <div key={option.label} className={option === selected ? 'visible' : 'hidden'}>
-        //                         {option.inputs.map(input => {
-        //                             return <Input key={input.id} type={input.type} placeholder={input.placeholder} onChange={onChange(sectionName, option)} />
-        //                         })}
-        //                     </div>
-        //                 })}
-        //             </div>
-        //         })
-        //     }
-        // </div>
     }
 }
 
 GestationalAgeCalculator.propTypes = {
-    options: React.PropTypes.array,
     onChange: React.PropTypes.func
 }
 
 export default GestationalAgeCalculator
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react'
-// import Toggle from '../toggle/toggle.js'
-// import Input from '../input/input.js'
-//
-// class GestationalAgeCalculator extends React.Component {
-//
-//     constructor() {
-//         super()
-//         const sections = this.sections
-//         Object.keys(sections).forEach((key) => {
-//             sections[key].selected = sections[key].options[0]
-//         })
-//         this.state = {
-//             sections: this.sections
-//         }
-//     }
-//
-//     sections = {
-//         due: {
-//             options: [
-//                 {
-//                     label: 'Due Date',
-//                     inputs: [
-//                         {
-//                             type: 'date',
-//                             placeholder: 'hey',
-//                             defaut: new Date()
-//                         }
-//                     ],
-//                     converter: (val) => val
-//                 },
-//                 {
-//                     label: 'Last Menstural Period',
-//                     inputs: [
-//                         {
-//                             type: 'number',
-//                             placeholder: 'Last Menstural Period'
-//                         }
-//                     ],
-//                     converter: (val) => {
-//                         return val ? new Date(val.getTime() - 86400000 * 7) : null
-//                     }
-//                 }
-//             ],
-//             onChange: (option) => {
-//
-//             }
-//         },
-//         // birth: {
-//         //
-//         // },
-//         // date: {
-//         //
-//         // }
-//     }
-//
-//     toggle = (sectionName) => (option) => {
-//         const stateUpdate = { sections : {} }
-//         stateUpdate.sections[sectionName] = { selected: option }
-//         console.log('toggle', stateUpdate)
-//         this.setState(stateUpdate)
-//     }
-//
-//     render() {
-//         const options = [
-//             { label: 'Due Date' },
-//             { label: 'Last Menstural Period' }
-//         ]
-//         const onChange = item => console.log('item: ', item)
-//         const onInputChange = item => {
-//             console.log('input: ', item, typeof item)
-//         }
-//
-//         const {sections} = this.state
-//         const {toggle} = this
-//
-//         return <div>
-//             {
-//                 Object.keys(sections).map((key) => {
-//                     const section = sections[key]
-//                     console.log('test', section);
-//                     // const selected = section.selected
-//                     return <div key={key}>
-//                         <div>
-//                             <Toggle options={section.options} onChange={toggle(key)} />
-//                         </div>
-//                         {section.options.map((option) => {
-//                             return <div key={option.label}>
-//                                 {option.inputs.map(input => {
-//                                     return <Input key="" type={input.type} placeholder={input.placeholder} onChange={onInputChange} />
-//                                 })}
-//                             </div>
-//                         })}
-//                     </div>
-//                 })
-//             }
-//         </div>
-//     }
-// }
-//
-// GestationalAgeCalculator.propTypes = {
-//     options: React.PropTypes.array,
-//     onChange: React.PropTypes.func
-// }
-//
-// export default GestationalAgeCalculator

@@ -1,6 +1,6 @@
 import React from 'react'
 import DatePicker from 'react-datepicker'
-import Moment from 'moment'
+import moment from 'moment'
 
 class DateInput extends React.Component {
 
@@ -11,30 +11,22 @@ class DateInput extends React.Component {
         }
     }
 
-    types = {
-        text: 'text',
-        number: 'number',
-        date: 'date'
-    }
-
-
     onChange = (val) => {
-        this.setState({ date: val })
-        this.props.onChange(val.toDate())
+        this.props.onChange(val || null)
     }
 
     render() {
         const { onChange } = this
-        const { placeholder } = this.props
-        const { date } = this.state
-        return <DatePicker selected={date} onChange={onChange} placeholderText={placeholder} />
+        const { placeholder, value } = this.props
+        console.log('date render', value)
+        return <DatePicker selected={value} onChange={onChange} placeholderText={placeholder} />
     }
 }
 
 DateInput.propTypes = {
     onChange: React.PropTypes.func,
     placeholder: React.PropTypes.string,
-    value: React.PropTypes.instanceOf(Date)
+    value: React.PropTypes.instanceOf(moment)
 }
 
 export default DateInput
