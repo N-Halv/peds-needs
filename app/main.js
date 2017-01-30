@@ -25,31 +25,31 @@ class Main extends Component {
         })
     }
 
-    render() {
-        return <div>
-            <GestationalAge />
-        </div>
-    }
-
     // render() {
-    //     const {pageComponent: PageComponent, menuOpened} = this.state
-    //     const className = [menuOpened ? '' : 'page-opened', 'app'].join(' ')
-    //     return <div className={className}>
-    //         <div className="open-page">
-    //             <div className="app-section">
-    //                 {PageComponent &&
-    //                     <PageComponent />
-    //                 }
-    //             </div>
-    //         </div>
-    //         <div className="main-menu">
-    //             <div className="app-section">
-    //                 <Menu onSelect={this.onPageSelect} />
-    //                 <div className="to-menu" onClick={this.toMenu}></div>
-    //             </div>
-    //         </div>
+    //     return <div>
+    //         <GestationalAge />
     //     </div>
     // }
+
+    render() {
+        const {pageComponent: PageComponent, menuOpened} = this.state
+        const className = [menuOpened ? '' : 'page-opened', 'app'].join(' ')
+        return <div className={className}>
+            <div className="open-page">
+                <div className="app-section">
+                    {PageComponent &&
+                        <PageComponent />
+                    }
+                </div>
+            </div>
+            <div className="main-menu">
+                <div className="app-section">
+                    <Menu onSelect={this.onPageSelect} />
+                    <div className="to-menu" onClick={this.toMenu}></div>
+                </div>
+            </div>
+        </div>
+    }
 }
 
 export default Main

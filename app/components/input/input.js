@@ -37,7 +37,6 @@ class Input extends React.Component {
     getInput = () => {
         const {types, onChange, setRef} = this
         const {type, placeholder, value, onChange: onDateChange} = this.props
-        console.log('input render', value)
         if(type === types.text || type === types.number) {
             return <input type={type} placeholder={placeholder}
                         onChange={onChange} ref={setRef('input')} value={value} />

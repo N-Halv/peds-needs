@@ -18,7 +18,6 @@ class DateInput extends React.Component {
     render() {
         const { onChange } = this
         const { placeholder, value } = this.props
-        console.log('date render', value)
         return <DatePicker selected={value} onChange={onChange} placeholderText={placeholder} />
     }
 }
