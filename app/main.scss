@@ -15,9 +15,9 @@ $page-transition: transform .3s;
 .app {
 
     .app-section {
-        max-width: 500px;
         height: 100%;
         margin: auto;
+        overflow-y: scroll;
     }
 
 
@@ -46,7 +46,7 @@ $page-transition: transform .3s;
 
     .open-page {
         position: absolute;
-        height: calc(100% - #{$back-to-menu-height};
+        height: 100%;
         width: 100%;
         padding-top: $back-to-menu-height;
         background-color: color(background, page);

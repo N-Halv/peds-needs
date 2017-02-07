@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import Menu from './pages/menu/menu.js'
-import GestationalAge from './pages/gestational-age/gestational-age.js'
 
 class Main extends Component {
 
@@ -25,25 +24,19 @@ class Main extends Component {
         })
     }
 
-    // render() {
-    //     return <div>
-    //         <GestationalAge />
-    //     </div>
-    // }
-
     render() {
         const {pageComponent: PageComponent, menuOpened} = this.state
         const className = [menuOpened ? '' : 'page-opened', 'app'].join(' ')
         return <div className={className}>
             <div className="open-page">
-                <div className="app-section">
+                <div className="app-section container">
                     {PageComponent &&
                         <PageComponent />
                     }
                 </div>
             </div>
             <div className="main-menu">
-                <div className="app-section">
+                <div className="app-section container">
                     <Menu onSelect={this.onPageSelect} />
                     <div className="to-menu" onClick={this.toMenu}></div>
                 </div>

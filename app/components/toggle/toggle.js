@@ -34,7 +34,7 @@ class Toggle extends React.Component {
 
     setToggleLocation(index) {
         const parentDim = this.toggleElem.getBoundingClientRect()
-        const childDim = this.toggleElem.childNodes[index].getBoundingClientRect()
+        const childDim = this.toggleElem.childNodes[index + 1].getBoundingClientRect()
         const left = childDim.left - parentDim.left
         const width = childDim.width
         this.sliderElem.setAttribute('style', `left: ${left}px; width: ${width}px;`)
@@ -45,6 +45,7 @@ class Toggle extends React.Component {
         const setRef = (elemName) => (elem) => this[elemName] = elem
         const getSelectedClass = (option) => option === this.state.selected ? 'toggle__option--selected' : ''
         return <div className="toggle" ref={setRef('toggleElem')}>
+            <div className="toggle__slidder" ref={setRef('sliderElem')}></div>
             {options.map((option, index) => (
                 <div
                     key={option.label}
@@ -53,7 +54,6 @@ class Toggle extends React.Component {
                     {option.label}
                 </div>
             ))}
-            <div className="toggle__slidder" ref={setRef('sliderElem')}></div>
         </div>
     }
 }
