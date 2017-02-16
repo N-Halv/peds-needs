@@ -19,17 +19,6 @@ class Growth extends React.Component {
         age: null
     }
 
-    // componentWillMount() {
-    //     console.log('componentWillMount')
-    // }
-    //
-    // componentDidMount() {
-    //     console.log('componentDidMount')
-    // }
-
-
-
-
     onChange = (type) => (value) => {
         this.setState((state) => {
             state[type] = value

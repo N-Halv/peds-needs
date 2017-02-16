@@ -36,8 +36,11 @@ class Input extends React.Component {
 
     getInput = () => {
         const {types, onChange, setRef} = this
-        const {type, placeholder, value, onChange: onDateChange} = this.props
+        const {type, placeholder, onChange: onDateChange} = this.props
+        let {value} = this.props
+
         if(type === types.text || type === types.number) {
+            value = value || ''
             return <input type={type} placeholder={placeholder}
                         onChange={onChange} ref={setRef('input')} value={value} />
         }
@@ -46,11 +49,26 @@ class Input extends React.Component {
         }
     }
 
+    getSuffix = () => {
+        const {suffix, value} = this.props
+
+        if(!value || !suffix) {
+            return <div></div>
+        }
+
+        return <div className="suffix">
+            <div className="suffix__spacer">{value}</div>
+            <div className="suffix__text">{suffix}</div>
+        </div>
+    }
+
     render() {
-        const {getInput} = this
+        const {getInput, getSuffix} = this
         const style = { width: this.props.width }
         return <div className="input" style={style}>
             { getInput() }
+            <div className="input__underline"></div>
+            { getSuffix() }
         </div>
     }
 }
@@ -60,6 +78,7 @@ Input.propTypes = {
     onChange: React.PropTypes.func,
     placeholder: React.PropTypes.string,
     width: React.PropTypes.string,
+    suffix: React.PropTypes.string,
     value: React.PropTypes.oneOfType([
         React.PropTypes.string,
         React.PropTypes.number,

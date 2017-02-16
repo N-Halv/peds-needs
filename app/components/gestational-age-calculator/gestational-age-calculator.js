@@ -27,12 +27,13 @@ class GestationalAgeCalculator extends React.Component {
 
     onChange = (sectionName, option, input) => (value) => {
         input.value = value
+        const {onChange} = this.props
         const sections = this.state.sections
         const result = changeValue(sectionName, sections)
         this.setState({ sections })
 
-        if(result) {
-            this.props.onChange(result)
+        if(result && onChange) {
+            onChange(result)
         }
     }
 
@@ -47,7 +48,7 @@ class GestationalAgeCalculator extends React.Component {
 
     renderInput = (option, sectionName) => (input) => {
         const {onChange} = this
-        return <Input key={input.id} value={input.value} type={input.type} placeholder={input.placeholder} onChange={onChange(sectionName, option, input)} />
+        return <Input key={input.id} value={input.value} width={input.width} type={input.type} placeholder={input.placeholder} suffix={input.suffix} onChange={onChange(sectionName, option, input)} />
     }
 
     render() {

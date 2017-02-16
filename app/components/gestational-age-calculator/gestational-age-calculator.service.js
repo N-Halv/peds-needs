@@ -65,7 +65,7 @@ const changeValue = (initKey, sections) => {
             section.options.forEach(option => {
                 if(option !== section.selected) {
                     const obj = option.getInputValues(sections)
-                    option.inputs.forEach(i => i.value = obj[i.id])
+                    option.inputs.forEach(i => i.value = obj ? obj[i.id] : null)
                 }
             })
         }
@@ -168,11 +168,18 @@ const getSections = () => {
                         {
                             type: 'number',
                             placeholder: 'Days',
-                            id: 'gestation_at_birth'
+                            id: 'weeks',
+                            suffix: 'weeks'
+                        },
+                        {
+                            type: 'number',
+                            placeholder: 'Days',
+                            id: 'days',
+                            suffix: 'days'
                         }
                     ],
-                    getValue: (vals) => vals.gestation_at_birth,
-                    getInputValues: (sections) => ({ gestation_at_birth: sections.gestationAtBirth.value })
+                    getValue: (vals) => getDays(vals),
+                    getInputValues: (sections) => getValues(sections.gestationAtBirth.value)
                 }
             ]
         },
@@ -217,12 +224,21 @@ const getSections = () => {
                     inputs: [
                         {
                             type: 'number',
+                            placeholder: 'Weeks',
+                            id: 'weeks',
+                            suffix: 'weeks',
+                            width: '50%'
+                        },
+                        {
+                            type: 'number',
                             placeholder: 'Days',
-                            id: 'age'
+                            id: 'days',
+                            suffix: 'days',
+                            width: '50%'
                         }
                     ],
-                    getValue: (vals) => vals.age,
-                    getInputValues: (sections) => ({ age: sections.age.value })
+                    getValue: (vals) => getDays(vals),
+                    getInputValues: (sections) => getValues(sections.age.value)
                 }
             ]
         }
@@ -234,6 +250,17 @@ const getSections = () => {
     })
     changeValue('dueDate', sections)
     return sections
+}
+
+function getDays(obj) {
+    return (obj.weeks * 7) + obj.days
+}
+
+function getValues(days) {
+    return {
+        weeks: Math.floor(days / 7),
+        days: days % 7
+    }
 }
 
 export { getSections, changeValue }

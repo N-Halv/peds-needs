@@ -5,13 +5,11 @@ import Chart from 'chart.js'
 class GrowthCalculation extends React.Component {
 
     componentDidMount() {
-
-        const elem = document.getElementById("myChart")
+        const elem = document.getElementById('myChart')
         this.createChart(elem)
     }
 
     getRecord = (config, age) => {
-        console.log('config', config, age)
         return config.items[age]
     }
 
@@ -25,21 +23,9 @@ class GrowthCalculation extends React.Component {
         return jStat.normal.cdf(z, mean, sd)
     }
 
-    // constructor() {
-    //     super()
-    //     this.state = {
-    //         client: -1
-    //     }
-    // }
-
-    // componentDidMount() {
-    //     console.log('test')
-    // }
-
     createChart = (elem)  => {
 
         const ctx = document.getElementById('myChart')
-        console.log('creatingChart', elem)
         const myChart = new Chart(ctx, {
             type: 'line',
             data: {
