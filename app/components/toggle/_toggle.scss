@@ -28,3 +28,33 @@
     }
 
 }
+
+
+
+
+.toggle2 {
+    height: 25px;
+    width: 100%;
+    position: relative;
+
+
+    &__option {
+        position: absolute;
+        transition: left .5s ;
+
+        &:not(.toggle2__option--selected) {
+            color: #ccc;
+            text-decoration: underline;
+        }
+
+        // &--selected {
+        //     color: green;
+        // }
+
+    }
+
+    &__slidder {
+        display: none;
+    }
+
+}

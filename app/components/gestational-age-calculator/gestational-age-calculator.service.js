@@ -167,15 +167,17 @@ const getSections = () => {
                     inputs: [
                         {
                             type: 'number',
-                            placeholder: 'Days',
+                            placeholder: 'Weeks',
                             id: 'weeks',
-                            suffix: 'weeks'
+                            suffix: 'weeks',
+                            width: '50%'
                         },
                         {
                             type: 'number',
                             placeholder: 'Days',
                             id: 'days',
-                            suffix: 'days'
+                            suffix: 'days',
+                            width: '50%'
                         }
                     ],
                     getValue: (vals) => getDays(vals),

@@ -2,7 +2,6 @@
     $height: 30px;
     $padding: 5px;
     display: inline-block;
-    width: 500px;
     position: relative;
     height: $height;
 
@@ -58,5 +57,12 @@
 
     .react-datepicker__input-container {
         display: block;
+    }
+
+    // remove unwanted bootstrap styles
+    &.form-control {
+        padding: 0;
+        border: none;
+        box-shadow: none;
     }
 }

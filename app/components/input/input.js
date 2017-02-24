@@ -65,7 +65,7 @@ class Input extends React.Component {
     render() {
         const {getInput, getSuffix} = this
         const style = { width: this.props.width }
-        return <div className="input" style={style}>
+        return <div className="input form-control" style={style}>
             { getInput() }
             <div className="input__underline"></div>
             { getSuffix() }

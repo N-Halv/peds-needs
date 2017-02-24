@@ -30,6 +30,7 @@ $page-transition: transform .3s;
         box-shadow: #555 0px 1px 4px;
         background-color: color(background, menu);
         color: color(text, menu);
+        z-index: 2;
 
         .to-menu {
             height: 0px;
@@ -52,6 +53,7 @@ $page-transition: transform .3s;
         padding-top: $back-to-menu-height;
         background-color: color(background, page);
         color: color(text, page);
+        z-index: 1;
     }
 
     &.page-opened {

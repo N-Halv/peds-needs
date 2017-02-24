@@ -59,16 +59,20 @@ class Growth extends React.Component {
         return <div>
             <p>Growth Calculator!</p>
 
-            <div className="inputlabel">Gestational Age</div>
-            <Input value={age} type="number" placeholder="Gestational Age (days)" onChange={onChange('age')} />
+            <div className="form-group">
+                <label className="inputlabel">Gestational Age</label>
+                <Input value={age} type="number" placeholder="Gestational Age (days)" onChange={onChange('age')} />
+            </div>
 
+            <div className="form-group">
+                <label className="inputlabel">Length</label>
+                <Input value={length} type="number" placeholder="Length (cm)" suffix="cm" onChange={onChange('length')} />
+            </div>
 
-            <div className="inputlabel">Length</div>
-            <Input value={length} type="number" placeholder="Length (cm)" onChange={onChange('length')} />
-
-            <div className="inputlabel">Weight</div>
-            <Input value={weight} type="number" placeholder="Weight (cm)" onChange={onChange('weight')} />
-
+            <div className="form-group">
+                <label className="inputlabel">Weight</label>
+                <Input value={weight} type="number" placeholder="Weight (cm)" suffix="cm" onChange={onChange('weight')} />
+            </div>
             { canSubmit &&
                 <button onClick={submit}>Submit</button>
             }

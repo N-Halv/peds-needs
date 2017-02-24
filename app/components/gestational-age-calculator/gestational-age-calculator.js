@@ -1,5 +1,5 @@
 import React from 'react'
-import Toggle from '../toggle/toggle.js'
+import Toggle from '../toggle/toggle2.js'
 import Input from '../input/input.js'
 import {getSections, changeValue} from './gestational-age-calculator.service.js'
 
@@ -64,7 +64,7 @@ class GestationalAgeCalculator extends React.Component {
             {
                 Object.keys(sections).map((sectionName) => {
                     const section = sections[sectionName]
-                    return <div key={sectionName}>
+                    return <div key={sectionName} className="form-group">
                         <div>
                             <Toggle options={section.options} onChange={toggle(sectionName)} />
                         </div>
