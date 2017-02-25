@@ -1,48 +1,90 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 module.exports = {
+    devtool: 'source-map',
     entry: './app/app.js',
     output: {
         path: __dirname + '/dist',
         filename: 'bundle.js'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.scss$|\.css$/,
-                loader: 'style!css!autoprefixer!sass'
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'autoprefixer-loader',
+                    'sass-loader'
+                ]
             },
             {
                 test: /\.jsx?$/,
-                loader: 'babel',
+                use: {
+                    loader: 'babel-loader'
+                },
                 exclude: /node_modules/
             },
             {
                 test: /\.png$/,
-                loader: 'url-loader?limit=100000'
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 100000
+                    }
+                }
             },
             {
                 test: /\.jpg$/,
-                loader: 'file-loader'
-            },
-            {
-                test: /\.json$/,
-                loader: 'json-loader'
+                use: {
+                    loader: 'file-loader'
+                }
             },
             {
                 test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=application/font-woff'
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 100000,
+                        mimetype: 'application/font-woff'
+                    }
+                }
             },
             {
                 test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=application/octet-stream'
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 100000,
+                        mimetype: 'application/octet-stream'
+                    }
+                }
             },
             {
                 test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'file'
+                use: {
+                    loader: 'file-loader'
+                }
             },
             {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: 'url?limit=10000&mimetype=image/svg+xml'
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 100000,
+                        mimetype: 'image/svg+xml'
+                    }
+                }
             }
         ]
-    }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './app/index.html',
+            files: {
+                css: ['style.css'],
+                js: [ 'bundle.js']
+            }
+        })
+    ]
 }

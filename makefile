@@ -1,17 +1,11 @@
-all: moveHtml build open buildAndWatch
+all: runApp
 
 clean:
 	rm -rf dist/
 	mkdir dist/
 
-moveHtml: clean
-	cp app/index.html dist/index.html
-
-buildAndWatch:
-	webpack --progress --watch
+runApp:
+	webpack-dev-server --inline --content-base dist/ --port 4444 --open
 
 build:
 	webpack --progress
-
-open:
-	open dist/index.html
