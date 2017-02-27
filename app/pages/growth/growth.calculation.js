@@ -10,7 +10,28 @@ class GrowthCalculation extends React.Component {
     }
 
     getRecord = (config, age) => {
-        return config.items[age]
+        const records = config.lmsValues
+
+        if(age < records[0].age || age > records[records.length - 1]) {
+            throw 'age is out of range'
+        }
+
+        // get closest record to given age
+        // TODO: binary search
+        let closestDistance = Infinity
+        let closestRecord
+        for(let i = 0; i < records.length; i++) {
+            const dist = Math.abs(age - records[i].age)
+            if(dist < closestDistance) {
+                closestDistance = dist
+                closestRecord = records[i]
+            }
+            else {
+                break
+            }
+        }
+
+        return closestRecord
     }
 
     getZScore = (record, value) => {
@@ -19,45 +40,48 @@ class GrowthCalculation extends React.Component {
     }
 
     normsdist = (z) => {
-        const mean = 0, sd = 1
+        const mean = 0,
+            sd = 1
         return jStat.normal.cdf(z, mean, sd)
     }
 
-    createChart = (elem)  => {
+    createChart = (elem) => {
+        const {config, age, value} = this.props
+
+        const plot = {
+            label: 'plot',
+            pointRadius: 5,
+            borderColor: 'black',
+            pointBackgroundColor: 'green',
+            data: [{x: age, y: value}]
+        }
+        const chartSeries = [plot, ...config.series]
+
+        const colors = [
+            'rgba(250,0,0,1)',
+            'rgba(200,50,0,1)',
+            'rgba(200,100,0,1)',
+            'rgba(100,150,0,1)',
+            'rgba(50,150,0,1)',
+            'rgba(50,200,0,1)',
+            'rgba(0,250,0,1)'
+        ]
+        config.series.forEach((s, index) => {
+            s.pointRadius = 0
+            s.borderColor = colors[index]
+        })
 
         const ctx = document.getElementById('myChart')
-        const myChart = new Chart(ctx, {
+        const scatterChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [[12, 19, 3, 5, 2, 3], [12,3,4,5,6,6]],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
+                datasets: chartSeries
             },
             options: {
                 scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
                     }]
                 }
             }
@@ -82,11 +106,11 @@ class GrowthCalculation extends React.Component {
             <br />
             percentile: {percentile}
 
+            <div className="growth-chart" ref={ref('chart-div')}></div>
             <canvas id="myChart" ref={ref('chart')}></canvas>
         </div>
     }
 }
-
 
 GrowthCalculation.propTypes = {
     config: React.PropTypes.object,
