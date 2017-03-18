@@ -16,27 +16,37 @@ class GrowthCalculation extends React.Component {
             throw 'age is out of range'
         }
 
-        // get closest record to given age
-        // TODO: binary search
-        let closestDistance = Infinity
-        let closestRecord
-        for(let i = 0; i < records.length; i++) {
-            const dist = Math.abs(age - records[i].age)
-            if(dist < closestDistance) {
-                closestDistance = dist
-                closestRecord = records[i]
-            }
-            else {
-                break
+        for(let i = 0; i < records.length - 1; i++) {
+            if(age >= records[i].age && age <= records[i + 1].age) {
+                if(age === records[i].age) return [records[i]]
+                else if(age === records[i + 1].age) return [records[i + 1]]
+                return [records[i], records[i + 1]]
             }
         }
 
-        return closestRecord
+        // TODO: throw real errors
+        throw 'chart configuration data is bad or not sorted correctly'
     }
 
-    getZScore = (record, value) => {
-        const {l, m, s} = record
-        return (Math.pow(value / m, l) - 1) / (l * s)
+    getZScore = (records, value, age) => {
+
+        // TODO: I'm not sure if this is legit linear interpolation...
+        const zScores = records.map(record => {
+            const {l, m, s} = record
+            return (Math.pow(value / m, l) - 1) / (l * s)
+        })
+
+        if(zScores.length === 1) {
+            return zScores[0]
+        }
+
+        const ageAbove = age - records[0].age
+        const ageDiff = records[1].age - records[0].age
+        const percentAbove = ageAbove / ageDiff
+
+        const zScoreDiff = zScores[1] - zScores[0]
+        const zScoreAdd = zScoreDiff * percentAbove
+        return zScores[0] + zScoreAdd
     }
 
     normsdist = (z) => {
@@ -96,7 +106,7 @@ class GrowthCalculation extends React.Component {
         const {getRecord, getZScore, normsdist, ref} = this
         const {config, age, value} = this.props
         const record = getRecord(config, age)
-        const zScore = getZScore(record, value)
+        const zScore = getZScore(record, value, age)
         const percentile = normsdist(zScore)
 
         return <div>

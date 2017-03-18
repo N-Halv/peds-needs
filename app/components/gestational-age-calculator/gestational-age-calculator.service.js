@@ -189,11 +189,11 @@ const getSections = () => {
             dependancies: ['dueDate', 'gestationAtBirth', 'age'],
             options: [
                 {
-                    label: 'Date Of Interest',
+                    label: 'Date Of Recording',
                     inputs: [
                         {
                             type: 'date',
-                            placeholder: 'Date Of Interest',
+                            placeholder: 'Date Of Recording',
                             value: moment().startOf('day'),
                             id: 'date'
                         }

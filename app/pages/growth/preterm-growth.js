@@ -1,8 +1,13 @@
 import React from 'react'
 import Input from '../../components/input/input.js'
 import GrowthCalculation from './growth.calculation.js'
-import WeightBoy from '../../data/cdc-2010/weight.boy.json'
-import StatureBoy from '../../data/cdc-2010/stature.boy.json'
+import FentonWeightBoy from '../../data/growth.fenton.weight.boy.json'
+import WeightGirl from '../../data/fenton2013/weight.girl.json'
+import WeightBoy from '../../data/fenton2013/weight.boy.json'
+import LengthGirl from '../../data/fenton2013/length.girl.json'
+import LengthBoy from '../../data/fenton2013/length.boy.json'
+import HeadCircumferenceGirl from '../../data/fenton2013/head-circumference.girl.json'
+import HeadCircumferenceBoy from '../../data/fenton2013/head-circumference.boy.json'
 
 
 class Growth extends React.Component {
@@ -15,7 +20,7 @@ class Growth extends React.Component {
     }
 
     state = {
-        stature: null,
+        length: null,
         weight: null,
         age: null
     }
@@ -34,16 +39,8 @@ class Growth extends React.Component {
             if(state.weight) {
                 results.push({
                     type: 'weight',
-                    config: WeightBoy,
+                    config: FentonWeightBoy,
                     value: state.weight,
-                    age
-                })
-            }
-            if(state.stature) {
-                results.push({
-                    type: 'stature',
-                    config: StatureBoy,
-                    value: state.stature,
                     age
                 })
             }
@@ -62,25 +59,25 @@ class Growth extends React.Component {
 
     render() {
         const {state, onChange, submit} = this
-        const {stature, weight, age, results} = state
-        const canSubmit = age && (stature || weight)
+        const {length, weight, age, results} = state
+        const canSubmit = age && (length || weight)
 
         return <div>
             <p>Growth Calculator!</p>
 
             <div className="form-group">
-                <label className="inputlabel">Age</label>
-                <Input value={age} type="number" placeholder="Age (months)" suffix="months" onChange={onChange('age')} />
+                <label className="inputlabel">Gestational Age</label>
+                <Input value={age} type="number" placeholder="Gestational Age (days)" onChange={onChange('age')} />
             </div>
 
             <div className="form-group">
-                <label className="inputlabel">Stature/Height</label>
-                <Input value={stature} type="number" placeholder="Stature (cm)" suffix="cm" onChange={onChange('stature')} />
+                <label className="inputlabel">Length</label>
+                <Input value={length} type="number" placeholder="Length (cm)" suffix="cm" onChange={onChange('length')} />
             </div>
 
             <div className="form-group">
                 <label className="inputlabel">Weight</label>
-                <Input value={weight} type="number" placeholder="Weight (kg)" suffix="kg" onChange={onChange('weight')} />
+                <Input value={weight} type="number" placeholder="Weight (cm)" suffix="cm" onChange={onChange('weight')} />
             </div>
             { canSubmit &&
                 <button onClick={submit}>Submit</button>
