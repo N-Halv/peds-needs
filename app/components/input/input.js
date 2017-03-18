@@ -1,6 +1,6 @@
 import React from 'react'
 import moment from 'moment'
-import DateInput from './dateInput.js'
+import DateInput from './date-input'
 
 class Input extends React.Component {
 
